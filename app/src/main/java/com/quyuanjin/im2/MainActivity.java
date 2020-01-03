@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         //  NettyLongChannel.initNetty();
-
+        EventBus.getDefault().register(this);
 
         //设置侧滑菜单栏
         slidingMenu();
