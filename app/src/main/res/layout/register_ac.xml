@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
+  <LinearLayout
+android:orientation="vertical"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent">
+      <Button
+          android:id="@+id/register"
+          style="?android:attr/borderlessButtonStyle"
+          android:layout_width="match_parent"
+          android:layout_height="45dp"
+          android:layout_marginLeft="15dp"
+          android:layout_marginTop="20dp"
+          android:layout_marginRight="15dp"
+          android:layout_marginBottom="20dp"
+          android:background="@drawable/shape_user_info_add_to_contact"
+          android:text="一键注册"
+          android:textColor="@color/white"
+          android:textSize="16sp"
+          />
+
+      <Button
+          android:id="@+id/zhuantiao"
+          style="?android:attr/borderlessButtonStyle"
+          android:layout_width="match_parent"
+          android:layout_height="45dp"
+          android:layout_marginLeft="15dp"
+          android:layout_marginTop="20dp"
+          android:layout_marginRight="15dp"
+          android:layout_marginBottom="20dp"
+          android:background="@drawable/shape_user_info_add_to_contact"
+          android:text="数据库测试"
+          android:textColor="@color/white"
+          android:textSize="16sp"
+          />
+      <Button
+          android:id="@+id/greendaozhuantiao"
+          style="?android:attr/borderlessButtonStyle"
+          android:layout_width="match_parent"
+          android:layout_height="45dp"
+          android:layout_marginLeft="15dp"
+          android:layout_marginTop="20dp"
+          android:layout_marginRight="15dp"
+          android:layout_marginBottom="20dp"
+          android:background="@drawable/shape_user_info_add_to_contact"
+          android:text="greendao数据库测试"
+          android:textColor="@color/white"
+          android:textSize="16sp"
+          />
+  </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>

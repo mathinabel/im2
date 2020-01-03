@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white_alpha_48"
+    tools:context=".MainActivity">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.qmuiteam.qmui.widget.QMUITopBar
+            android:id="@+id/qmuitopbar"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+
+            app:qmui_topbar_bg_color="@color/white_alpha_64">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.qmuiteam.qmui.layout.QMUIButton
+                    android:id="@+id/profile_btn"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/default_head_rect" />
+
+                <TextView
+                    android:id="@+id/title_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="5dp"
+                    android:singleLine="true"
+                    android:text="@string/toolbarname"
+                    android:textColor="@color/qmui_config_color_background_pressed"
+                    android:textSize="20sp" />
+
+     <!--           <com.nightonke.boommenu.BoomMenuButton
+                    android:id="@+id/bmb"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="end"
+                    android:background="@drawable/ic_add"
+                    app:bmb_buttonEnum="textInsideCircle"
+                    app:bmb_buttonPlaceEnum="buttonPlace_sc_9_1"
+                    app:bmb_piecePlaceEnum="piecePlace_dot_9_1" />
+         -->
+            <com.nightonke.boommenu.BoomMenuButton
+                android:id="@+id/bmb"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginTop="-10dp"
+                app:bmb_backgroundEffect="false"
+                app:bmb_boomEnum="boomParabola_2"
+                app:bmb_piecePlaceEnum="piecePlace_ham_4"
+                app:bmb_buttonPlaceEnum="buttonPlace_ham_4"
+                app:bmb_showDuration="300"
+                app:bmb_hideDuration="300"/>
+            </FrameLayout>
+        </com.qmuiteam.qmui.widget.QMUITopBar>
+
+
+        <LinearLayout
+
+            android:id="@+id/main_fragment_container"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+
+            android:orientation="vertical">
+
+
+        </LinearLayout>
+        <devlight.io.library.ntb.NavigationTabBar
+            android:id="@+id/ntb_horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="49dp"
+            android:layout_gravity="top"
+
+            app:ntb_badge_bg_color="#ffff0000"
+            app:ntb_badge_gravity="top"
+            app:ntb_badge_position="right"
+            app:ntb_badge_title_color="#ffffffff"
+            app:ntb_badged="true"
+            app:ntb_scaled="true"
+            app:ntb_swiped="true"
+            app:ntb_tinted="true"
+            app:ntb_title_mode="all"
+            app:ntb_bg_color="@color/white"
+            app:ntb_titled="true">
+
+        </devlight.io.library.ntb.NavigationTabBar>
+
+    </LinearLayout>
+
+    <!--  <android.support.design.widget.BottomNavigationView
+
+          android:id="@+id/nav_view"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:background="#EBEBEB"
+          app:layout_constraintBottom_toBottomOf="parent"
+          app:layout_constraintLeft_toLeftOf="parent"
+          app:layout_constraintRight_toRightOf="parent"
+          app:menu="@menu/bottom_nav_menu" />
+     -->
+
+</android.support.constraint.ConstraintLayout>

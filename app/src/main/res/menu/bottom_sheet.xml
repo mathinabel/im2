@@ -1,0 +1,8 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/share" android:title="ring/share" android:icon="@drawable/ic_launcher_background"/>
+    <item android:id="@+id/upload" android:title="string/upload" android:icon="@drawable/bs_list_selector"/>
+    <item android:id="@+id/call" android:title="tring/call" android:icon="@drawable/bs_ic_more"/>
+    <group android:id="@+id/helpgroup">
+        <item android:id="@+id/help" android:title="ing/help" android:icon="@drawable/bs_ic_clear"/>
+    </group>
+</menu>

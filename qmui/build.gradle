@@ -1,0 +1,64 @@
+apply plugin: 'com.android.library'
+
+group = 'com.qmuiteam'
+version = "1.3.4" // QMUI 发布到 bintray 的版本号
+
+//noinspection GroovyMissingReturnStatement
+android {
+    compileSdkVersion 28
+   // buildToolsVersion
+    lintOptions {
+        abortOnError false
+    }
+
+    defaultConfig {
+        minSdkVersion 21
+        targetSdkVersion 28
+//        vectorDrawables.useSupportLibrary = true // 与 com.android.support:support-vector-drawable 搭配使用,禁掉 Android Studio 自动生成 png 的功能
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+//    libraryVariants.all{ variant ->
+//        variant.mergeResources.doLast {
+//            replaceTheme variant
+//        }
+//    }
+//    testVariants.all { variant ->
+//        variant.mergeResources.doLast {
+//            replaceTheme variant
+//        }
+//    }
+}
+
+//def replaceTheme(variant){
+//    println "dirName::${variant.dirName}"
+//    def output = "AppConfigTheme"
+//
+//    File valuesFile = file("${buildDir}/intermediates/res/merged/${variant.dirName}/values/values.xml")
+//    String content = valuesFile.getText('UTF-8')
+//    content = content.replaceAll(/\$\{QMUI_PARENT_THEME\}/, output)
+//    valuesFile.write(content, 'UTF-8')
+//}
+
+dependencies {
+    api fileTree(include: ['*.jar'], dir: 'libs')
+    api "com.android.support:recyclerview-v7:28.0.0"
+    api "com.android.support:appcompat-v7:28.0.0"
+    api "com.android.support:design:28.0.0"
+    api "com.android.support:support-vector-drawable:28.0.0" // need Gradle Plugin v1.5.0 or above
+    //test
+//    testCompile 'junit:junit:4.12'
+//    testCompile 'org.mockito:mockito-core:1.10.19'
+}
+
+// deploy
+File deployConfig = project.file('deploy.properties')
+if (deployConfig.exists()) {
+    apply from: "deployMaven.gradle"
+    apply from: "deployBintray.gradle"
+}
