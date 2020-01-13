@@ -27,6 +27,24 @@
                 android:layout_margin="5dp"
                 android:src="@mipmap/ic_cheat_voice" />
 
+            <com.quyuanjin.im2.voicerecorder.view.AudioRecorderButton
+                android:id="@+id/id_recorder_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="50dp"
+                android:layout_marginTop="-37dp"
+                android:layout_marginRight="50dp"
+                android:layout_marginBottom="7dp"
+                android:background="@drawable/btn_recorder_normal"
+                android:gravity="center"
+                android:minHeight="0dp"
+                android:padding="5dp"
+                android:text="@string/str_recorder_normal"
+                android:textColor="#727272"
+                android:visibility="gone">
+
+            </com.quyuanjin.im2.voicerecorder.view.AudioRecorderButton>
+
             <RelativeLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -68,11 +86,11 @@
 
             <ImageView
                 android:id="@+id/extImageView"
-                android:scaleType="centerInside"
                 android:layout_width="45dp"
                 android:layout_height="35dp"
                 android:layout_marginRight="5dp"
                 android:layout_marginBottom="5dp"
+                android:scaleType="centerInside"
                 android:src="@mipmap/ic_cheat_add" />
 
             <Button
@@ -91,6 +109,13 @@
 
         <View style="@style/Line" />
 
+        <GridView
+            android:id="@+id/gridView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:numColumns="4"
+            android:padding="1dp"
+            android:visibility="gone"></GridView>
 
     </LinearLayout>
 </merge>

@@ -19,19 +19,19 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
 
-            app:qmui_topbar_bg_color="@color/white_alpha_64">
+            app:qmui_topbar_bg_color="@color/white">
 
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <com.qmuiteam.qmui.layout.QMUIButton
-                    android:id="@+id/profile_btn"
+                <ImageView
+                    android:id="@+id/profile_img"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_marginLeft="5dp"
                     android:layout_marginTop="10dp"
-                    android:background="@drawable/default_head_rect" />
+                    android:background="@drawable/deer" />
 
                 <TextView
                     android:id="@+id/title_name"

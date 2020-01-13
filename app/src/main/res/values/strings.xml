@@ -7,6 +7,24 @@
     <string name="please_to_talk">按住 说话</string>
     <string name="send">发送</string>
 
+    <string name="image">图片</string>
+    <string name="camera">相机</string>
+    <string name="location">位置</string>
+    <string name="voice">录音</string>
+    <string name="takephoto">拍照</string>
+    <string name="file">文件</string>
+
+    <string name="str_recorder_normal">按住说话</string>
+    <string name="str_recorder_recording">松开结束</string>
+    <string name="str_recorder_want_cancel">松开手指，取消发送</string>
+    <string name="permission">权限(permission)</string>
+    <string name="no_permissions">应用需要必要的运行权限</string>
+
+    <string name="settings">设置</string>
+    <string name="help">帮助</string>
+    <string name="string_help_text">当前应用缺少必要权限。\n\n请点击\"设置\"-\"权限\"-打开所需权限。\n\n最后点击两次后退按钮，即可返回。</string>
+    <string name="quit">退出</string>
+
     <string name="label_permission_network">网络访问</string>
     <string name="label_permission_network_desc">用于即时通讯传输</string>
     <string name="label_permission_read">读取文件</string>

@@ -50,8 +50,17 @@ public class ChatClientHandler extends SimpleChannelInboundHandler<String> {
                     EventBus.getDefault().post(new SendLongConnectBack());
                     break;
                 case ProtoConstant.SEND_MESSAGE_BACK:
-
-                    EventBus.getDefault().post(new SendMessage(recemsg[2],recemsg[1]));
+                    String fromuuid = recemsg[1];
+                    String touuid = recemsg[2];
+                    String contentType = recemsg[3];
+                    String sendTime =recemsg[4];
+                    String receivedTime = recemsg[5];
+                    String content = recemsg[6];
+                    String netPath = recemsg[7];
+                    String recorderTime = recemsg[8];
+                    EventBus.getDefault().post(new SendMessage(Float.valueOf(recorderTime),content,
+                            "",fromuuid,touuid,"","",sendTime,
+                            "",netPath,contentType));
 
 
 
@@ -84,31 +93,10 @@ public class ChatClientHandler extends SimpleChannelInboundHandler<String> {
 
                     break;
                 case ProtoConstant.SEND_PULL_UNREAD_MSG_BACK:
-                    //todo 第二次再打开app时会导致再次读取并且存储
-                    // ，这可能会导致多次打开之后出现数据重复的问题
+
                     //解包 senduuid sendime sendmsg 并存进greendao的未读表和消息表
                     EventBus.getDefault().post(new StorePullUnReadMsg(recemsg));
-                    //在上面的store里面进行
-         /*           for (int i=1;i<recemsg.length;i+=3)
-                    {
-                        UnReadMessage unReadMessage=new UnReadMessage();
-                        unReadMessage.setSenderId(recemsg[i]);
-                        unReadMessage.setSendTime(recemsg[i+1]);
-                        unReadMessage.setMsg(recemsg[i+2]);
-                        App.getDaoSession().getUnReadMessageDao().insert(unReadMessage);
 
-                        //逻辑要清楚 message 发送时，自身是发送者，对方是接收者
-                        // 接收时 自身是接收者，对方是发送者
-                        //现在是接收数据，所以自身是接收者，将对方的uuid存进发送者里
-                        Message message=new Message();
-                        message.setType("0");
-                        message.setSendID(recemsg[i]);
-                        message.setReceiveId();
-                        message.setCreateTime(recemsg[i+1]);
-                        message.setMsg(recemsg[i+2]);
-                        App.getDaoSession().getMessageDao().insert(message);
-
-                    }*/
                     break;
                 default:
                     break;

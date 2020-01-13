@@ -1,1 +1,1 @@
-include ':app', ':sliding_menu', ':alertlibrary', ':camera'
+include ':app', ':sliding_menu', ':alertlibrary', ':camera', ':refresh-layout'

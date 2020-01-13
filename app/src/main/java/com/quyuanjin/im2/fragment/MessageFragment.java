@@ -26,6 +26,9 @@ import com.quyuanjin.im2.netty.pojo.SendMessage;
 import com.quyuanjin.im2.netty.pojo.SucceedAddFriend;
 import com.quyuanjin.im2.netty.pojo.SucceedAddFriendHello;
 import com.quyuanjin.im2.netty.pojo.SucceedAddFriendHelloTwo;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 
 import org.greenrobot.eventbus.EventBus;
@@ -85,12 +88,36 @@ public class MessageFragment extends Fragment {
             //对recycleview进行配置
             initRecyclerView();
             //获取未读信息
-            checkUnreadMsg();
-            //创建时获取chating表的正在聊天条目,并且展示
-            getUUidFromChatingTable();
+          //  checkUnreadMsg();
+            reflashLayout();
         }
 
         return view;
+    }
+
+    private void reflashLayout() {
+
+        RefreshLayout refreshLayout = view.findViewById(R.id.refreshLayouttwo);
+        refreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(RefreshLayout refreshlayout) {
+                refreshlayout.finishRefresh(2000/*,false*/);//传入false表示刷新失败
+            }
+        });
+        refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(RefreshLayout refreshlayout) {
+                refreshlayout.finishLoadMore(2000/*,false*/);//传入false表示加载失败
+            }
+        });
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.d("123","执行了onStart()");
+        //创建时获取chating表的正在聊天条目,并且展示
+        getUUidFromChatingTable();
     }
 
     //创建时获取chating表的正在聊天条目
@@ -105,7 +132,7 @@ public class MessageFragment extends Fragment {
                     uuidList.add(chating.getFriendUUId());
                     msgAdapter.notifyDataSetChanged();
                 }}}
-
+        Log.d("123","执行了getUUidFromChatingTable()");
 
     }
 

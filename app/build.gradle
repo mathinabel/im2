@@ -2,14 +2,27 @@ apply plugin: 'com.android.application'
 apply plugin: 'org.greenrobot.greendao' // apply plugin
 
 android {
+    signingConfigs {
+        debug {
+            storeFile file('C:\\Users\\Administrator\\.android\\keystoreplace\\imkeystore.jks')
+            keyAlias = 'key0'
+            storePassword 'qyj7468945'
+            keyPassword 'qyj7468945'
+        }
+    }
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.quyuanjin.im2"
-        minSdkVersion 21
+        minSdkVersion 22
         targetSdkVersion 27
         versionCode 1
         versionName "1.0.4"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    sourceSets{
+        main{
+            jniLibs.srcDirs = ['libs']
+        }
     }
     buildTypes {
         release {
@@ -21,7 +34,7 @@ android {
 
     greendao{
         //数据库版本
-        schemaVersion 13
+        schemaVersion 19
 }
 
 }
@@ -56,8 +69,8 @@ dependencies {
 
     implementation 'com.qianwen:update-app:3.5.2'
     implementation 'com.lzy.net:okgo:3.0.4'
-    implementation  'com.qianwen:okhttp-utils:3.8.0'
-
+  //  implementation  'com.qianwen:okhttp-utils:3.8.0'
+    implementation   'com.zhousf.lib:okhttp3:2.9.9'
     implementation 'cjt.library.wheel:camera:1.1.9'
 
     implementation 'devlight.io:navigationtabbar:1.2.5'
@@ -67,6 +80,20 @@ dependencies {
     implementation 'com.cocosw:bottomsheet:1.4.0'
 
     implementation 'org.kymjs.kjframe:kjframe:2.4.6.2'
+    implementation project(path: ':refresh-layout')
 
+    implementation 'com.gyf.barlibrary:barlibrary:2.3.0'
+    implementation files('libs\\Android_Map3D_SDK_V7.1.0_20191030.jar')
 
+    implementation 'com.github.wildma:PictureSelector:1.1.4'
+
+    implementation 'de.hdodenhof:circleimageview:3.0.1'
+    implementation 'net.steamcrafted:materialiconlib:1.1.5'
+    implementation 'com.balysv:material-ripple:1.0.2'
+    implementation 'com.github.zcweng:switch-button:0.0.3@aar'
+
+    //gradle版本在3.0以上引入此行
+    implementation 'com.lcw.library:imagepicker:2.2.7'
+    implementation 'com.github.bumptech.glide:glide:4.8.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
 }

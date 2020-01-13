@@ -51,7 +51,7 @@ public class SplashAc extends AppCompatActivity {
         setContentView(R.layout.splash_ac);
         splash_imageView = findViewById(R.id.splash);
         Random random = new Random();
-        int num = random.nextInt(5);
+        int num = random.nextInt(3);
         switch (num) {
             case 0:
                 splash_imageView.setBackgroundResource(R.drawable.splash3);
@@ -60,14 +60,9 @@ public class SplashAc extends AppCompatActivity {
                 splash_imageView.setBackgroundResource(R.drawable.splash4);
                 break;
             case 2:
-                splash_imageView.setBackgroundResource(R.drawable.splash3);
-                break;
-            case 3:
-                splash_imageView.setBackgroundResource(R.drawable.splash4);
-                break;
-            case 4:
                 splash_imageView.setBackgroundResource(R.drawable.splash5);
                 break;
+
 
             default:
                 splash_imageView.setBackgroundResource(R.drawable.splash6);
@@ -112,12 +107,11 @@ public class SplashAc extends AppCompatActivity {
     private void checkIsLogin() {
         boolean islogin = (Boolean) SharedPreferencesUtils.getParam(SplashAc.this, "isLogin", false);
         String selfuuid = (String) SharedPreferencesUtils.getParam(this, "uuid", "");
-        if (islogin) {
-            //如果已登录过，从服务器拉取未读信息
-            NettyLongChannel.sendPullUnreadMsg(selfuuid);
-            //还要拉取未添加好友信息
-            NettyLongChannel.sendPullUnreadAddFriendMsg(selfuuid);
+        if (!selfuuid.equals("")) {
+
+
             Intent intent = new Intent(SplashAc.this, MainActivity.class);
+            intent.putExtra("selfuuid",selfuuid);
             startActivity(intent);
             finish();
         } else {
@@ -134,7 +128,6 @@ public class SplashAc extends AppCompatActivity {
 
 
     private void checkNetWork() {
-
 
     }
 

@@ -1,68 +1,43 @@
 package com.quyuanjin.im2;
 
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 
 import com.cocosw.bottomsheet.BottomSheet;
-import com.cocosw.bottomsheet.BottomSheetHelper;
+import com.gyf.barlibrary.ImmersionBar;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
-import com.nightonke.boommenu.BoomButtons.ButtonPlaceEnum;
 import com.nightonke.boommenu.BoomButtons.HamButton;
 import com.nightonke.boommenu.BoomButtons.OnBMClickListener;
-import com.nightonke.boommenu.BoomButtons.SimpleCircleButton;
-import com.nightonke.boommenu.BoomButtons.TextInsideCircleButton;
 import com.nightonke.boommenu.BoomMenuButton;
 import com.nightonke.boommenu.ButtonEnum;
-import com.nightonke.boommenu.Piece.PiecePlaceEnum;
-import com.qmuiteam.qmui.layout.QMUIButton;
 import com.qmuiteam.qmui.widget.QMUITopBar;
 import com.qmuiteam.qmui.widget.dialog.QMUIBottomSheet;
 import com.quyuanjin.im2.ac.AddFriendAc;
-import com.quyuanjin.im2.ac.SplashAc;
 import com.quyuanjin.im2.app.App;
-import com.quyuanjin.im2.boom.BuilderManager;
 import com.quyuanjin.im2.camera.CameraView;
-import com.quyuanjin.im2.constant.ProtoConstant;
 import com.quyuanjin.im2.fragment.ContractFragment;
 import com.quyuanjin.im2.fragment.MeFragment;
 import com.quyuanjin.im2.fragment.MessageFragment;
 import com.quyuanjin.im2.greendao.pojo.Message;
 import com.quyuanjin.im2.greendao.pojo.UnReadMessage;
-import com.quyuanjin.im2.helputils.CProgressDialogUtils;
 import com.quyuanjin.im2.helputils.OkGoUpdateHttpUtil;
-import com.quyuanjin.im2.msg.Msg;
+import com.quyuanjin.im2.map.MapMainAc;
 import com.quyuanjin.im2.netty.NettyLongChannel;
-import com.quyuanjin.im2.netty.helper.NotificationUtils;
 import com.quyuanjin.im2.netty.helper.SharedPreferencesUtils;
-import com.quyuanjin.im2.netty.helper.UUIDHelper;
 import com.quyuanjin.im2.netty.pojo.SendMessage;
 import com.quyuanjin.im2.netty.pojo.StorePullUnReadMsg;
 import com.quyuanjin.im2.test.HorizontalNtbActivity;
@@ -70,6 +45,7 @@ import com.vector.update_app.UpdateAppBean;
 import com.vector.update_app.UpdateAppManager;
 import com.vector.update_app.UpdateCallback;
 import com.vector.update_app.utils.ColorUtil;
+import com.wildma.pictureselector.PictureSelector;
 
 
 import org.greenrobot.eventbus.EventBus;
@@ -82,7 +58,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 import devlight.io.library.ntb.NavigationTabBar;
 
@@ -90,13 +65,14 @@ import static com.quyuanjin.im2.ac.SplashAc.getLocalVersionName;
 
 
 public class MainActivity extends AppCompatActivity {
+    String seleucid ;
 
     MessageFragment messageFragment = new MessageFragment();
     ContractFragment contractFragment = new ContractFragment();
 
     MeFragment meFragment = new MeFragment();
     QMUITopBar qmuitopbar;
-    QMUIButton profile;
+    ImageView profile;
     SlidingMenu menu;
 
 
@@ -107,10 +83,11 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         //  NettyLongChannel.initNetty();
         EventBus.getDefault().register(this);
-
+        seleucid=getIntent().getStringExtra("selfuuid");
         //设置侧滑菜单栏
         slidingMenu();
-
+        //检查是否是第一次登录
+        checkIsFirstLogin();
 
         Button button = findViewById(R.id.button);
         button.setOnClickListener(new View.OnClickListener() {
@@ -124,7 +101,8 @@ public class MainActivity extends AppCompatActivity {
 
         qmuitopbar = findViewById(R.id.qmuitopbar);
 
-        profile = findViewById(R.id.profile_btn);
+        profile = findViewById(R.id.profile_img);
+
 
         profile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -148,6 +126,72 @@ public class MainActivity extends AppCompatActivity {
 
         initUnMessage();
 
+
+        changeStatueBar();
+
+    }
+
+    private void changeStatueBar() {
+        ImmersionBar.with(this).barColor(R.color.white).
+                /*  transparentStatusBar()  //透明状态栏，不写默认透明色
+                       .transparentNavigationBar()  //透明导航栏，不写默认黑色(设置此方法，fullScreen()方法自动为true)
+                       .transparentBar()             //透明状态栏和导航栏，不写默认状态栏为透明色，导航栏为黑色（设置此方法，fullScreen()方法自动为true）
+                       .statusBarColor(R.color.white)     //状态栏颜色，不写默认透明色
+                       .navigationBarColor(R.color.white) //导航栏颜色，不写默认黑色
+                       .barColor(R.color.white)  //同时自定义状态栏和导航栏颜色，不写默认状态栏为透明色，导航栏为黑色
+                       .statusBarAlpha(0.3f)  //状态栏透明度，不写默认0.0f
+                       .navigationBarAlpha(0.4f)  //导航栏透明度，不写默认0.0F
+                       .barAlpha(0.3f)  //状态栏和导航栏透明度，不写默认0.0f
+                       .statusBarDarkFont(true)   //状态栏字体是深色，不写默认为亮色
+                       .flymeOSStatusBarFontColor(R.color.btn3)  //修改flyme OS状态栏字体颜色
+                       .fullScreen(true)      //有导航栏的情况下，activity全屏显示，也就是activity最下面被导航栏覆盖，不写默认非全屏
+                       .hideBar(BarHide.FLAG_HIDE_BAR)  //隐藏状态栏或导航栏或两者，不写默认不隐藏
+                       .addViewSupportTransformColor(toolbar)  //设置支持view变色，可以添加多个view，不指定颜色，默认和状态栏同色，还有两个重载方法
+                       .titleBar(view)    //解决状态栏和布局重叠问题，任选其一
+                       .titleBarMarginTop(view)     //解决状态栏和布局重叠问题，任选其一
+                       .statusBarView(view)  //解决状态栏和布局重叠问题，任选其一
+                       .fitsSystemWindows(true)    //解决状态栏和布局重叠问题，任选其一，默认为false，当为true时一定要指定statusBarColor()，不然状态栏为透明色，还有一些重载方法
+                       .supportActionBar(true) //支持ActionBar使用
+                       .statusBarColorTransform(R.color.orange)  //状态栏变色后的颜色
+                       .navigationBarColorTransform(R.color.orange) //导航栏变色后的颜色
+                       .barColorTransform(R.color.orange)  //状态栏和导航栏变色后的颜色
+                       .removeSupportView(toolbar)  //移除指定view支持
+                       .removeSupportAllView() //移除全部view支持
+                       .navigationBarEnable(true)   //是否可以修改导航栏颜色，默认为true
+                       .navigationBarWithKitkatEnable(true)  //是否可以修改安卓4.4和emui3.1手机导航栏颜色，默认为true
+                       .addTag("tag")  //给以上设置的参数打标记
+                       .getTag("tag")  //根据tag获得沉浸式参数
+                       .reset()  //重置所以沉浸式参数
+                       .keyboardEnable(true)  //解决软键盘与底部输入框冲突问题，默认为false，还有一个重载方法，可以指定软键盘mode
+                       .keyboardMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)  //单独指定软键盘模式
+                       .setOnKeyboardListener(new OnKeyboardListener() {    //软键盘监听回调
+                           @Override
+                           public void onKeyboardChange(boolean isPopup, int keyboardHeight) {
+                              //isPopup为true，软键盘弹出，为false，软键盘关闭
+                           }
+                       }).  */
+
+                        init();
+    }
+
+
+    private void checkIsFirstLogin() {
+        String isfirstlogin = (String) SharedPreferencesUtils.getParam(this, "isfirstlogin", "");
+
+        if (isfirstlogin.equals("")) {//isfirstlogin没有赋值，证明是第一次登录，并且给它赋值，本if
+            //第二次打开时不再执行
+            SharedPreferencesUtils.setParam(this, "isfirstlogin", "ok");
+
+            //首次登录向服务器要已添加的好友名单
+            requestFriendListFromServer();
+
+        }
+    }
+
+    private void requestFriendListFromServer() {
+        String selfuuid = (String) SharedPreferencesUtils.getParam(this, "uuid", "");
+
+        NettyLongChannel.requestFriendList(selfuuid);
     }
 
     private void initBottomSheet() {
@@ -223,7 +267,17 @@ public class MainActivity extends AppCompatActivity {
                             initBottomSheet();
                             break;
                         case 2:
-
+                            Intent intent2 = new Intent(MainActivity.this, MapMainAc.class);
+                            startActivity(intent2);
+                            break;
+                        case 3:
+                            /**
+                             * create() 方法参数一是上下文，在 activity 中传 activity.this，在 fragment 中传 fragment.this。参数二为请求码，用于结果回调 onActivityResult 中判断
+                             * selectPicture() 方法参数分别为 是否裁剪、裁剪后图片的宽(单位 px)、裁剪后图片的高、宽比例、高比例。都不传则默认为裁剪，宽 200，高 200，宽高比例为 1：1。
+                             */
+                            PictureSelector
+                                    .create(MainActivity.this, PictureSelector.SELECT_REQUEST_CODE)
+                                    .selectPicture(true, 200, 200, 1, 1);
                             break;
                         default:
                             break;
@@ -234,6 +288,26 @@ public class MainActivity extends AppCompatActivity {
                     .normalText(getext())
                     .subNormalText(getSubText());
             bmb.addBuilder(builder);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        /*结果回调*/
+        if (requestCode == PictureSelector.SELECT_REQUEST_CODE) {
+            if (data != null) {
+                String picturePath = data.getStringExtra(PictureSelector.PICTURE_PATH);
+                SharedPreferencesUtils.setParam(this, "picturePath", picturePath);
+                profile.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+
+                /*如果使用 Glide 加载图片，则需要禁止 Glide 从缓存中加载，因为裁剪后保存的图片地址是相同的*/
+                /*RequestOptions requestOptions = RequestOptions
+                        .circleCropTransform()
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .skipMemoryCache(true);
+                Glide.with(this).load(picturePath).apply(requestOptions).into(mIvImage);*/
+            }
         }
     }
 
@@ -269,7 +343,7 @@ public class MainActivity extends AppCompatActivity {
     };
     private static int index = 0;
 
-    private static String[] text = new String[]{"加好友", "扫码", "拍照", "777"
+    private static String[] text = new String[]{"加好友", "分享", "拍照", "地图"
 
     };
 
@@ -303,7 +377,11 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        String s = (String) SharedPreferencesUtils.getParam(this, "picturePath", "");
 
+        if (!s.equals("")) {
+            profile.setImageBitmap(BitmapFactory.decodeFile(s));
+        }
         final String[] colors = getResources().getStringArray(R.array.default_preview);
 
         final NavigationTabBar navigationTabBar = findViewById(R.id.ntb_horizontal);
@@ -311,7 +389,7 @@ public class MainActivity extends AppCompatActivity {
         models.add(
                 new NavigationTabBar.Model.Builder(
                         getResources().getDrawable(R.drawable.ic_first),
-                        Color.parseColor(colors[0]))
+                        Color.parseColor(colors[1]))
                         .selectedIcon(getResources().getDrawable(R.drawable.ic_sixth))
                         .title("Heart")
                         //    .badgeTitle("NTB")
@@ -329,7 +407,7 @@ public class MainActivity extends AppCompatActivity {
         models.add(
                 new NavigationTabBar.Model.Builder(
                         getResources().getDrawable(R.drawable.ic_third),
-                        Color.parseColor(colors[2]))
+                        Color.parseColor(colors[1]))
                         .selectedIcon(getResources().getDrawable(R.drawable.ic_seventh))
                         .title("Diploma")
 
@@ -649,4 +727,20 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        //从服务器拉取未读信息
+        //如果已登录过，从服务器拉取未读信息
+        try {
+
+            NettyLongChannel.sendPullUnreadMsg(seleucid);
+            //还要拉取未添加好友信息
+            NettyLongChannel.sendPullUnreadAddFriendMsg(seleucid);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
 }
